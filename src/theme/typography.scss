@@ -1,0 +1,27 @@
+:root {
+	--font-weight-black: 700;
+	--font-weight-bold: 500;
+	--font-weight-regular: 400;
+	--font-weight-thin: 300;
+
+	--font-size-title: 24px;
+	--font-size-big: 18px;
+	--font-size-body: 16px;
+	--font-size-small: 14px;
+	--font-size-legal: 12px;
+
+	font-family: system-ui, BlinkMacSystemFont;
+	font-size: var(--font-size-body);
+	font-weight: var(--font-weight-regular);
+	color: var(--color-gray-10);
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: sans-serif, system-ui, BlinkMacSystemFont;
+		font-weight: var(--font-weight-black);
+	}
+
+	small {
+		font-size: var(--font-size-legal);
+		font-weight: var(--font-weight-thin);
+	}
+}

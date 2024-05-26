@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import { RouterView } from 'vue-router';
+</script>
+
+<template>
+	<RouterView />
+</template>
+
+<style lang="scss">
+body, #app {
+	background: var(--color-secondary);
+	color: var(--color-secondary-accent);
+	min-width: 100dvw;
+}
+</style>
