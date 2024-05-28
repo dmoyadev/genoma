@@ -117,7 +117,7 @@ watch(() => props.hasError, (value) => {
 							class="btn-append"
 							@click="showPassword = !showPassword"
 						>
-							<BaseIcon :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" />
+							<BaseIcon :icon="showPassword ? 'mdi:eye-off' : 'mdi:eye'" />
 						</BaseButton>
 					</slot>
 

@@ -1,7 +1,7 @@
 export enum IconSize {
-	S = 's', /* 8px */
-	M = 'm', /* 16px */
-	L = 'l', /* 24px */
-	XL = 'xl', /* 32px */
-	XXL = 'xxl', /* 48px */
+	S = 12, /* 12px */
+	M = 16, /* 16px */
+	L = 24, /* 24px */
+	XL = 32, /* 32px */
+	XXL = 48, /* 48px */
 }

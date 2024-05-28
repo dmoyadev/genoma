@@ -34,6 +34,16 @@ export const routes: Array<RouteRecordRaw> = [
 	},
 	
 	{
+		path: '/onboarding',
+		name: 'Onboarding',
+		component: () => import('@/modules/onboarding/pages/OnboardingPage.vue'),
+		meta: {
+			title: 'Onboarding',
+			isPublic: false,
+		},
+	},
+	
+	{
 		path: '/showcase',
 		name: 'Component Showcase',
 		component: () => import('@/showcase/ShowcasePage.vue'),
@@ -61,7 +71,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
 	setDocumentTitle(to);
-	const redirection = checkAuth(to);
+	const redirection = await checkAuth(to);
 	return redirection || true;
 });
 
@@ -78,14 +88,21 @@ function setDocumentTitle(to: RouteLocationNormalized) {
 	document.title = `${to.meta?.title ? (`${to.meta.title} | `) : ''}🧬 Genoma${titleSuffix}`;
 }
 
-function checkAuth(to: RouteLocationNormalized) {
+async function checkAuth(to: RouteLocationNormalized) {
 	if (to.meta?.isPublic) {
 		return;
 	}
 	
-	const { user } = useAuth();
+	// TODO - This is a workaround for the firebase auth state change delay
+	const { loading, user } = useAuth();
 	if (!user.value) {
-		return `/login${to.name === 'Home' ? '' : `?unauthorized=${to.fullPath}`}`;
+		while (loading.value) {
+			await new Promise(resolve => setTimeout(resolve, 50));
+		}
+	}
+	
+	if (!user.value) {
+		return `/logout${to.name === 'Home' ? '' : `?unauthorized=${to.fullPath}`}`;
 	}
 }
 

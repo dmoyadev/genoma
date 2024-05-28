@@ -11,6 +11,8 @@ import BaseInput from '@/components/input/BaseInput.vue';
 import { InputForm, InputType } from '@/components/input/BaseInput.types.ts';
 import * as pkg from '@/../package.json';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
+import { usePeopleService } from '@/modules/people/composables/usePeopleService.ts';
+import { useStorage } from '@/modules/app/composables/useStorage.ts';
 
 const { signInWithPassword } = useAuth();
 
@@ -34,6 +36,9 @@ watch(password, (value) => {
 
 const isEmailSet = ref<boolean>(false);
 
+const { people, getPeople } = usePeopleService();
+const hasSeenOnboarding = useStorage('onboarding-seen', false);
+
 const loadingLogin = ref<boolean>(false);
 const errorLogin = ref<boolean>(false);
 const route = useRoute();
@@ -55,6 +60,14 @@ async function doSignIn() {
 
 	signInWithPassword(email.value, password.value)
 		.then(async () => {
+			await getPeople();
+
+			// If there is no people, redirect to onboarding
+			if(!people.value.length && !hasSeenOnboarding.value) {
+				await router.push('/onboarding');
+				return;
+			}
+
 			// If there is a redirect query param, redirect to it
 			if (route.query?.redirect) {
 				await router.push(route.query.redirect as string);
