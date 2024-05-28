@@ -7,10 +7,10 @@ import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts'
 import { hasSlotContent } from '@/utils/helpers.ts';
 
 interface Props {
-	inputType?: InputType; /* The type of the input. @defaults InputForm.BLOCK */
-	form?: InputForm; /* The form of the input. @defaults InputForm.TEXT */
+	inputType?: InputType; /* The type of the input. @defaults InputForm.TEXT */
+	form?: InputForm; /* The form of the input. @defaults InputForm.BLOCK */
 	hasError?: boolean; /* Indicates if the input has an error. Determines if the `error` slot will be shown */
-	customValidity?: string; /* The error message of the input */
+	customValidity?: string; /* The error message of the input. It is the default value for the `error` slot */
 	loading?: boolean; /* Indicates if the input is loading */
 	isClearable?: boolean; /* Indicates if the input is clearable. @defaults true */
 }
@@ -140,7 +140,7 @@ watch(() => props.hasError, (value) => {
 
 		<!-- Error slot -->
 		<p
-			v-if="!loading && hasError && hasSlotContent($slots.error)"
+			v-if="!loading && hasError"
 			class="error"
 		>
 			<!-- @slot Error message of the input. Defaults to the customValidity prop -->
@@ -162,6 +162,7 @@ watch(() => props.hasError, (value) => {
 
 <style scoped lang="scss">
 div {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
