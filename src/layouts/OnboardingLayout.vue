@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
+import { usePeopleService } from '@/modules/people/composables/usePeopleService.ts';
+
+const { people } = usePeopleService();
 </script>
 
 <template>
@@ -15,7 +18,7 @@ import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts'
 		<BaseButton
 			:button-form="ButtonForm.INLINE"
 			:mode="ButtonMode.CLEAR"
-			to="/people/__new__"
+			:to="people.length ? '/' : '/people/__new__'"
 		>
 			Saltar
 		</BaseButton>

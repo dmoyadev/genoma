@@ -22,10 +22,23 @@ const { people, loading } = usePeopleService();
 
 	<!-- ✅ Success state -->
 	<template v-else>
-		<p style="background: var(--color-success); color: var(--color-success-accent)">
-			{{ people.find(p => p.id === $route.query?.created)?.name || 'ni idea' }} se ha creado!
+		<p
+			v-if="$route.query?.created"
+			style="background: var(--color-success); color: var(--color-success-accent)"
+		>
+			{{ people.find(p => p.id === $route.query.created)?.name || 'ni idea' }} se ha creado!
 		</p>
-		<p v-for="person in people" :key="person.id">
+		<p
+			v-if="$route.query?.updated"
+			style="background: var(--color-success); color: var(--color-success-accent)"
+		>
+			{{ people.find(p => p.id === $route.query.updated)?.name || 'ni idea' }} se ha actualizado!
+		</p>
+
+		<p
+			v-for="person in people" :key="person.id"
+			@click="$router.push(`/people/${person.id}`)"
+		>
 			{{ person }}
 			<br>
 			<br>
