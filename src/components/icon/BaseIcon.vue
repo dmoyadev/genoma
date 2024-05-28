@@ -14,7 +14,7 @@ withDefaults(defineProps<Props>(),	{
 <template>
 	<iconify-icon
 		:icon="icon"
-		:width="size"
-		:height="size"
+		:width="`${size}px`"
+		:height="`${size}px`"
 	/>
 </template>

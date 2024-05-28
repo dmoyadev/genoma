@@ -6,6 +6,7 @@ import type {
 } from 'firebase/firestore';
 import {
 	Timestamp,
+	addDoc,
 	collection,
 	doc,
 	getDoc,
@@ -104,10 +105,9 @@ export function useDB(collectionName: string) {
 		const { user } = useAuth();
 
 		const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
-		const elementRef = doc(collectionRef);
 		if (typeof element === 'object') {
 			const date: Timestamp = Timestamp.now();
-			await setDoc(elementRef, {
+			return await addDoc(collectionRef, {
 				...element,
 				user_uuid: user.value?.uid,
 				created_at: date,
@@ -123,7 +123,7 @@ export function useDB(collectionName: string) {
 		const elementSnap = await getDoc(elementRef);
 		if (elementSnap.exists() && typeof element === 'object') {
 			const date: Timestamp = Timestamp.now();
-			await setDoc(elementRef, {
+			return await setDoc(elementRef, {
 				...element,
 				updated_at: date,
 			});
@@ -132,9 +132,9 @@ export function useDB(collectionName: string) {
 
 	async function upsert<T>(element: WithFieldValue<T>, uuid?: string) {
 		if (!uuid) {
-			await create<T>(element);
+			return await create<T>(element);
 		} else {
-			await update(element, uuid);
+			return await update(element, uuid);
 		}
 	}
 

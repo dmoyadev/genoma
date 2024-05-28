@@ -138,7 +138,7 @@ function selectItem(item: T) {
 
 		<!-- Error slot -->
 		<p
-			v-if="!loading && hasError && hasSlotContent($slots.error)"
+			v-if="!loading && hasError"
 			class="error"
 		>
 			<!-- @slot Error message of the input. Defaults to the customValidity prop -->

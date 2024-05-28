@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import OnboardingLayout from '@/layouts/OnboardingLayout.vue';
 import BaseStepper from '@/components/stepper/BaseStepper.vue';
-import { computed, ref } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
@@ -9,19 +9,18 @@ import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts'
 const currentStep = ref(1);
 
 const stepTitle = computed<string | undefined>(() => {
-	switch(currentStep.value) {
+	switch (currentStep.value) {
 		case 1:
 			return 'Bienvenido a Genoma';
 		case 2:
 			return 'Genoma guarda tus datos en la nube';
 		case 3:
 		default:
-			return;
 	}
-})
+});
 
 const stepText = computed<string>(() => {
-	switch(currentStep.value) {
+	switch (currentStep.value) {
 		case 1:
 			return 'La aplicación donde guardar lo más importante: tu familia. En Genoma podrás almacenar la información de tu árbol genealógico hasta lo más profundo. ¿Estás listo?';
 		case 2:
@@ -31,7 +30,7 @@ const stepText = computed<string>(() => {
 		default:
 			return '';
 	}
-})
+});
 </script>
 
 <template>
@@ -62,7 +61,7 @@ const stepText = computed<string>(() => {
 				</BaseButton>
 				<BaseButton
 					:button-form="currentStep !== 1 ? ButtonForm.NOTCHED_LEFT : ButtonForm.BLOCK"
-					:to="currentStep === 3 ? '/person/__new__' : undefined"
+					:to="currentStep === 3 ? '/people/__new__' : undefined"
 					@click="currentStep++"
 				>
 					{{ currentStep === 3 ? 'Empezar' : 'Siguiente' }}

@@ -15,7 +15,7 @@ import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts'
 		<BaseButton
 			:button-form="ButtonForm.INLINE"
 			:mode="ButtonMode.CLEAR"
-			to="/person/__new__"
+			to="/people/__new__"
 		>
 			Saltar
 		</BaseButton>
