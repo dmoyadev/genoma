@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useStorage } from '@/modules/app/composables/useStorage.ts';
+
+const hasSeenOnboarding = useStorage('onboarding-seen');
+hasSeenOnboarding.value = true;
 
 const loading = ref<boolean>(true);
 const error = ref();

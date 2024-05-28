@@ -11,5 +11,12 @@ body, #app {
 	background: var(--color-secondary);
 	color: var(--color-secondary-accent);
 	min-width: 100dvw;
+	min-height: 100dvh;
+	overflow-x: hidden;
+}
+
+#app {
+	display: flex;
+	flex-direction: column;
 }
 </style>
