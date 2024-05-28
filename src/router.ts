@@ -42,13 +42,6 @@ export const routes: Array<RouteRecordRaw> = [
 	},
 
 	{
-		path: '/people/__new__',
-		name: 'New Person',
-		component: () => import('@/modules/people/pages/PersonCreate.vue'),
-		meta: { title: 'Nueva persona' },
-	},
-
-	{
 		path: '/people/:id',
 		name: 'Person',
 		component: () => import('@/modules/people/pages/PersonPage.vue'),

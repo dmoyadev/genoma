@@ -13,8 +13,8 @@ export function usePeopleService() {
 		people.value = await getBy<Person>();
 	}
 
-	async function createPerson(person: Person) {
-		const personRef = await upsert<Person>(person);
+	async function upsertPerson(person: Person) {
+		const personRef = await upsert<Person>(person, person.id);
 		await getPeople();
 		return personRef;
 	}
@@ -27,6 +27,6 @@ export function usePeopleService() {
 		people,
 		loading,
 		getPeople,
-		createPerson,
+		upsertPerson,
 	};
 }

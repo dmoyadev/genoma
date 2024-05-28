@@ -12,7 +12,7 @@ import {
 	getDoc,
 	getDocs,
 	query,
-	setDoc,
+	updateDoc,
 	where,
 } from 'firebase/firestore';
 import { ref } from 'vue';
@@ -123,10 +123,11 @@ export function useDB(collectionName: string) {
 		const elementSnap = await getDoc(elementRef);
 		if (elementSnap.exists() && typeof element === 'object') {
 			const date: Timestamp = Timestamp.now();
-			return await setDoc(elementRef, {
+			await updateDoc(elementRef, {
 				...element,
 				updated_at: date,
 			});
+			return elementRef;
 		}
 	}
 
