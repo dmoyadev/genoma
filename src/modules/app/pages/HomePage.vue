@@ -1,51 +1,63 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';
 import { usePeopleService } from '@/modules/people/composables/usePeopleService.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
+import BaseIcon from '@/components/icon/BaseIcon.vue';
+import PersonCard from '@/modules/people/components/PersonCard.vue';
+import { useTreeService } from '@/modules/people/composables/useTreeService.ts';
 
 const hasSeenOnboarding = useStorage('onboarding-seen');
 hasSeenOnboarding.value = true;
 
 const { people, loading } = usePeopleService();
+const { root } = useTreeService();
+watch(people, (value) => {
+	if (value.length) {
+		root.value = value[0];
+	}
+});
 </script>
 
 <template>
-	<br>
 	<!-- ⏳ Loading state -->
 	<template v-if="loading">
-		Loading...
-	</template>
-
-	<!-- 📃 Empty state -->
-	<template v-else-if="!people?.length">
-		Empty
+		<BaseIcon
+			icon="line-md:loading-loop"
+			:size="IconSize.XXL"
+			class="icon-loading"
+		/>
 	</template>
 
 	<!-- ✅ Success state -->
 	<template v-else>
-		<p
-			v-if="$route.query?.created"
-			style="background: var(--color-success); color: var(--color-success-accent)"
-		>
-			{{ people.find(p => p.id === $route.query.created)?.name || 'ni idea' }} se ha creado!
-		</p>
-		<p
-			v-if="$route.query?.updated"
-			style="background: var(--color-success); color: var(--color-success-accent)"
-		>
-			{{ people.find(p => p.id === $route.query.updated)?.name || 'ni idea' }} se ha actualizado!
-		</p>
+		<!-- TODO Add message when query params has data -->
 
-		<p
-			v-for="person in people" :key="person.id"
-			@click="$router.push(`/people/${person.id}`)"
-		>
-			{{ person }}
-			<br>
-			<br>
-		</p>
+		<main>
+			<PersonCard
+				v-if="root"
+				ref="$mainCard"
+				:key="root.id"
+				:person="root"
+				:generation="0"
+				class="main-card"
+			/>
+		</main>
 	</template>
 </template>
 
 <style lang="scss" scoped>
+.icon-loading {
+	margin: auto;
+}
 
+main {
+	position: absolute;
+	inset: 0;
+	overflow: auto;
+
+	&:deep(article.main-card) {
+		border: 1px solid var(--color-primary);
+	}
+}
 </style>

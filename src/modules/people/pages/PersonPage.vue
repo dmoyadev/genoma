@@ -21,19 +21,19 @@ const { loading, people, upsertPerson } = usePeopleService();
 const person = computed(() => people.value.find(p => p.id === ID.value));
 
 const name = ref<string>();
-const fatherName = ref<string>();
-const motherName = ref<string>();
+const firstSurname = ref<string>();
+const secondSurname = ref<string>();
 const gender = ref<Gender>();
 const notes = ref<string>();
 
 watchEffect(() => {
 	if (person.value) {
-		const fullName = `${person.value.name} ${person.value.fatherName} ${person.value.motherName}`;
+		const fullName = `${person.value.name} ${person.value.firstSurname} ${person.value.secondSurname}`;
 		document.title = document.title.replace('{id}', fullName);
 
 		name.value = person.value.name;
-		fatherName.value = person.value.fatherName;
-		motherName.value = person.value.motherName;
+		firstSurname.value = person.value.firstSurname;
+		secondSurname.value = person.value.secondSurname;
 		gender.value = person.value.gender;
 		notes.value = person.value.notes;
 	} else {
@@ -60,7 +60,7 @@ function save() {
 	loadingUpserting.value = true;
 	hasError.value = false;
 
-	if (!name.value || !fatherName.value || !motherName.value || !gender.value) {
+	if (!name.value || !firstSurname.value || !secondSurname.value || !gender.value) {
 		hasError.value = true;
 		loadingUpserting.value = false;
 		return;
@@ -69,10 +69,10 @@ function save() {
 	const newPersonData: Person = {
 		...person.value,
 		name: name.value,
-		fatherName: fatherName.value,
-		motherName: motherName.value,
+		firstSurname: firstSurname.value,
+		secondSurname: secondSurname.value,
 		gender: gender.value,
-		notes: notes.value,
+		...(notes.value && { notes: notes.value }),
 	};
 
 	upsertPerson(newPersonData)
@@ -119,7 +119,7 @@ function save() {
 				id="form"
 				@submit.prevent
 			>
-				<ErrorMessage v-if="hasError">
+				<ErrorMessage v-if="errorUpserting">
 					Algo ha ido mal al guardar la persona. Por favor, revisa los campos y vuelve a intentarlo.
 					<br>
 					Error: {{ errorUpserting?.message }}
@@ -128,7 +128,7 @@ function save() {
 				<div class="avatar-and-name">
 					<BaseAvatar
 						:size="64"
-						:alt="`Foto de ${name} ${fatherName} ${motherName}`"
+						:alt="`Foto de ${name} ${firstSurname} ${secondSurname}`"
 					/>
 
 					<BaseInput
@@ -142,21 +142,21 @@ function save() {
 				</div>
 
 				<BaseInput
-					v-model="fatherName"
+					v-model="firstSurname"
 					custom-validity="El apellido materno es obligatorio"
-					:has-error="hasError && !fatherName"
+					:has-error="hasError && !firstSurname"
 					required
 				>
-					Apellido paterno
+					Primer apellido
 				</BaseInput>
 
 				<BaseInput
-					v-model="motherName"
+					v-model="secondSurname"
 					custom-validity="El apellido materno es obligatorio"
-					:has-error="hasError && !motherName"
+					:has-error="hasError && !secondSurname"
 					required
 				>
-					Apellido materno
+					Segundo apellido
 				</BaseInput>
 
 				<BaseRadioGroup
