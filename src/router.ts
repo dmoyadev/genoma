@@ -42,6 +42,13 @@ export const routes: Array<RouteRecordRaw> = [
 	},
 
 	{
+		path: '/config',
+		name: 'Config',
+		component: () => import('@/modules/app/pages/ConfigPage.vue'),
+		meta: { title: 'Configuration' },
+	},
+
+	{
 		path: '/people/:id',
 		name: 'Person',
 		component: () => import('@/modules/people/pages/PersonPage.vue'),
