@@ -1,24 +1,24 @@
 {
   "name": "genoma",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-	  "dev": "vite --mode localhost --host --port 5200",
-	  "build": "rm -rf dist && vue-tsc && vite build",
-	  "preview": "vite preview --host --port 4200",
-	  "lint": "eslint --fix",
-	  "check-typing": "vue-tsc --noEmit",
-	  "check-deps": "npx taze"
+    "dev": "vite --mode localhost --host --port 5200",
+    "build": "rm -rf dist && vue-tsc && vite build",
+    "preview": "vite preview --host --port 4200",
+    "lint": "eslint --fix",
+    "check-typing": "vue-tsc --noEmit",
+    "check-deps": "npx taze"
   },
   "dependencies": {
-	  "iconify-icon": "^2.1.0",
-	  "firebase": "^10.12.0",
+    "iconify-icon": "^2.1.0",
+    "firebase": "^10.12.0",
     "vue": "^3.4.26",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-	  "@antfu/eslint-config": "^2.16.0",
+    "@antfu/eslint-config": "^2.16.0",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.5",
@@ -27,10 +27,10 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
-	  "sass": "^1.75.0",
+    "sass": "^1.75.0",
     "typescript": "~5.4.5",
     "vite": "^5.2.10",
-	  "vite-plugin-mkcert": "^1.17.5",
+    "vite-plugin-mkcert": "^1.17.5",
     "vue-tsc": "^2.0.14"
   }
 }
