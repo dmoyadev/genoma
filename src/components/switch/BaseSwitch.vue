@@ -31,6 +31,7 @@ label {
 
 	input {
 		--border-size: 1px;
+		flex-shrink: 0;
 		height: 100%;
 		width: 54px;
 		border: var(--border-size) solid var(--color-secondary-accent);

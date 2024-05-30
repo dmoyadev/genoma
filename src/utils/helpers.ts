@@ -32,7 +32,11 @@ export function capitalizeAll(str: string): string {
  *
  * @returns string - normalized string
  */
-export function normalize(str: string) {
+export function normalize(str?: string) {
+	if (!str) {
+		return '';
+	}
+
 	return String(str)
 		.normalize('NFD') // Normalize to decomposed form
 		.replace(/[\u0300-\u036F]/g, '') // Remove combining diacritical marks
