@@ -60,6 +60,14 @@ export function useAuth() {
 	function logout() {
 		signOut(auth)
 			.then(async () => {
+				// Empty the local storage except for these keys
+				const KEYS_TO_KEEP = ['onboarding-seen'];
+				Object.keys(localStorage).forEach((key) => {
+					if (!KEYS_TO_KEEP.includes(key)) {
+						localStorage.removeItem(key);
+					}
+				});
+
 				await router.push('/logout');
 			})
 			.catch((error) => {

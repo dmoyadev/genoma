@@ -7,10 +7,11 @@ import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { useTreeService } from '@/modules/people/composables/useTreeService.ts';
 import { normalize } from '@/utils/helpers.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { InputType } from '@/components/input/BaseInput.types.ts';
+import { InputForm, InputType } from '@/components/input/BaseInput.types.ts';
 import type { Familiar } from '@/modules/people/models/Person.ts';
 import PersonRow from '@/modules/people/components/PersonRow.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
+import { ButtonForm } from '@/components/button/BaseButton.types.ts';
 
 const hasSeenOnboarding = useStorage('onboarding-seen');
 hasSeenOnboarding.value = true;
@@ -70,10 +71,18 @@ const filteredRelations = computed<Record<number, Familiar[]>>(() => {
 		<header>
 			<BaseInput
 				v-model="searchQuery"
+				:form="InputForm.NOTCHED_RIGHT"
 				:input-type="InputType.SEARCH"
 			>
 				Buscar...
 			</BaseInput>
+
+			<BaseButton
+				:button-form="ButtonForm.CIRCLE"
+				to="/config"
+			>
+				<BaseIcon icon="mdi:gear" />
+			</BaseButton>
 		</header>
 
 		<main>

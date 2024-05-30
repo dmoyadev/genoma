@@ -9,7 +9,6 @@ import { ButtonColor, ButtonForm } from '@/components/button/BaseButton.types.ts
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputForm, InputType } from '@/components/input/BaseInput.types.ts';
-import * as pkg from '@/../package.json';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import { usePeopleService } from '@/modules/people/composables/usePeopleService.ts';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';
@@ -28,6 +27,7 @@ const isEmailValid = computed<boolean>(() => {
 		&& !!email.value
 		&& /.[^\n\r@\u2028\u2029]*@.+\..+/.test(email.value));
 });
+const errorLogin = ref<boolean>(false);
 watch(password, (value) => {
 	if (!value) {
 		errorLogin.value = false;
@@ -40,7 +40,6 @@ const { people, getPeople } = usePeopleService();
 const hasSeenOnboarding = useStorage('onboarding-seen', false);
 
 const loadingLogin = ref<boolean>(false);
-const errorLogin = ref<boolean>(false);
 const route = useRoute();
 async function doSignIn() {
 	errorLogin.value = false;
@@ -140,13 +139,6 @@ async function doSignIn() {
 				</BaseButton>
 			</section>
 		</form>
-
-		<small>
-			v.{{ pkg.version }}
-			<br>
-			Continuando, indicas que aceptas nuestros
-			<a href="#">Términos y condiciones</a> y la <a href="#">Política de privacidad</a>
-		</small>
 	</AuthLayout>
 </template>
 
@@ -173,22 +165,6 @@ form {
 	section {
 		display: flex;
 		gap: 4px;
-	}
-}
-
-small {
-	margin-top: auto;
-	align-self: center;
-	display: block;
-	font-size: var(--font-size-legal);
-	color: var(--color-primary);
-	text-align: center;
-	max-width: 230px;
-
-	a {
-		color: var(--color-secondary-accent);
-		font-size: var(--font-size-legal);
-		text-decoration: underline;
 	}
 }
 </style>
