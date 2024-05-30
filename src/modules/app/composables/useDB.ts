@@ -74,6 +74,9 @@ export function useDB(collectionName: string) {
 		console.log(`API: getBy (${collectionName})`);
 
 		const { user } = useAuth();
+		if (!user.value?.uid) {
+			return [];
+		}
 
 		loading.value = true;
 		return new Promise((resolve, reject) => {

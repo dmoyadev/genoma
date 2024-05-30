@@ -30,7 +30,7 @@ function createRippleEffect(event: MouseEvent) {
 	}
 
 	const button = isRouterLink(element.value) ? element.value.$el : element.value;
-	if (!button) {
+	if (!button || button.classList.contains('button-disabled')) {
 		return;
 	}
 
@@ -64,7 +64,7 @@ function createRippleEffect(event: MouseEvent) {
 			[`button-mode-${mode}`]: true,
 			[`button-color-${color}`]: true,
 			[`button-form-${buttonForm}`]: true,
-			'button-disabled': loading,
+			'button-disabled': !!(('disabled' in $attrs && (!!$attrs.disabled || $attrs.disabled === '')) || loading),
 		}"
 		:to="to"
 		@click="createRippleEffect($event)"
@@ -251,8 +251,9 @@ router-link {
 	}
 
 	&.button-loading,
-	&:disabled {
+	&.button-disabled {
 		opacity: .5;
+		pointer-events: none;
 	}
 }
 </style>

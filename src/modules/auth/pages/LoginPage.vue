@@ -63,7 +63,7 @@ async function doSignIn() {
 			await getPeople();
 
 			// If there is no people, redirect to onboarding
-			if(!people.value.length && !hasSeenOnboarding.value) {
+			if (!Object.keys(people.value).length && !hasSeenOnboarding.value) {
 				await router.push('/onboarding');
 				return;
 			}

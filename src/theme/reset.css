@@ -120,7 +120,7 @@ html{
 }
 
 body {
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 /* Change Autocomplete styles in Chrome*/

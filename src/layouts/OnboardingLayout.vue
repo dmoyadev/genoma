@@ -18,7 +18,7 @@ const { people } = usePeopleService();
 		<BaseButton
 			:button-form="ButtonForm.INLINE"
 			:mode="ButtonMode.CLEAR"
-			:to="people.length ? '/' : '/people/__new__'"
+			:to="Object.keys(people).length ? '/' : '/people/__new__'"
 		>
 			Saltar
 		</BaseButton>

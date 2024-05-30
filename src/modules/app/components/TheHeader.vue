@@ -55,6 +55,11 @@ header {
   padding: 8px;
   gap: 8px;
 
+	/* Glass effect */
+	background: var(--color-secondary-alpha);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+
 	&:not(:has(.btn-back)) {
 		padding-left: 16px;
 	}
