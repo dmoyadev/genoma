@@ -54,6 +54,7 @@ header {
   align-items: center;
   padding: 8px;
   gap: 8px;
+	z-index: 1000;
 
 	/* Glass effect */
 	background: var(--color-secondary-alpha);
