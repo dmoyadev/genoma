@@ -1,5 +1,5 @@
 <p align="center">
-	<a href="genoma.danimoya.es" target="_blank">
+	<a href="https://genoma.danimoya.es" target="_blank">
 		<img src="/public/logo.svg" width="400" alt="Genoma Logo">
 	</a>
 </p>
