@@ -10,6 +10,36 @@ const alreadyPaintedPeople = ref<Record<string, Person>>({});
 export function useTreeService() {
 	const { people } = usePeopleService();
 
+	type KnownRelationPaths =
+		'self'
+		| 'self -> parent'
+		| 'self -> sibling'
+		| 'self -> parent -> child'
+		| 'self -> sibling -> child'
+		| 'self -> parent -> parent -> parent'
+		| 'self -> parent -> parent -> parent -> parent'
+		| 'self -> parent -> parent -> parent -> parent -> parent'
+		| 'self -> parent -> parent'
+		| 'self -> parent -> parent -> child'
+		| 'self -> parent -> sibling'
+		| 'self -> parent -> sibling -> child -> parent'
+		| 'self -> parent -> sibling -> spouse'
+		| 'self -> parent -> parent -> child -> child'
+		| 'self -> parent -> sibling -> child'
+		| 'self -> child'
+		| 'self -> child -> child'
+		| 'self -> child -> child -> child'
+		| 'self -> child -> child -> child -> child'
+		| 'self -> child -> child -> child -> child -> child'
+		| 'self -> child -> parent'
+		| 'self -> child -> spouse'
+		| 'self -> spouse'
+		| 'self -> spouse -> parent'
+		| 'self -> spouse -> child'
+		| 'self -> spouse -> sibling'
+		| 'self -> parent -> spouse'
+		;
+
 	/**
 	 * Get the relations of a person
 	 * @param {string} relationPath - The path of the relation
@@ -19,10 +49,11 @@ export function useTreeService() {
 	 * @returns {string} - The relation string
 	 */
 	function getRelationString(relationPath: string, gender: Gender, isMarriageActive?: boolean): string | undefined {
-		const relationMap: { [key: string]: { male: string; female: string } } = {
+		const relationMap: { [key in KnownRelationPaths]: { male: string; female: string } } = {
 			'self': { male: 'Selección', female: 'Selección' },
 			'self -> parent': { male: 'Padre', female: 'Madre' },
 			'self -> sibling': { male: 'Hermano', female: 'Hermana' },
+			'self -> parent -> child': { male: 'Hermanastro', female: 'Hermanastra' },
 			'self -> sibling -> child': { male: 'Sobrino', female: 'Sobrina' },
 			'self -> parent -> parent -> parent': { male: 'Bisabuelo', female: 'Bisabuela' },
 			'self -> parent -> parent -> parent -> parent': { male: 'Tatarabuelo', female: 'Tatarabuela' },
@@ -40,12 +71,17 @@ export function useTreeService() {
 			'self -> child -> child -> child -> child': { male: 'Tataranieto', female: 'Tataranieta' },
 			'self -> child -> child -> child -> child -> child': { male: 'Chozno', female: 'Chozna' },
 			'self -> child -> parent': { male: isMarriageActive === true ? 'Esposo' : 'Pareja', female: isMarriageActive === true ? 'Esposa' : 'Pareja' },
+			'self -> child -> spouse': { male: 'Yerno', female: 'Nuera' },
 			'self -> spouse': { male: isMarriageActive === true ? 'Esposo' : 'Pareja', female: isMarriageActive === true ? 'Esposa' : 'Pareja' },
+			'self -> spouse -> parent': { male: 'Suegro', female: 'Suegra' },
+			'self -> spouse -> child': { male: 'Hijastro', female: 'Hijastra' },
+			'self -> spouse -> sibling': { male: 'Cuñado', female: 'Cuñada' },
+			'self -> parent -> spouse': { male: 'Padrastro', female: 'Madrastra' },
 		};
 
 		const lowercaseGender = gender.toLowerCase();
 		const normalizedGender = !['male', 'female'].includes(lowercaseGender) ? 'male' : gender;
-		const relation = relationMap[relationPath]?.[normalizedGender as 'male' | 'female'];
+		const relation = relationMap[relationPath as KnownRelationPaths]?.[normalizedGender as 'male' | 'female'];
 		if (!relation) {
 			if (relationPath.includes('self -> parent -> parent -> parent -> parent -> parent')) {
 				const parentCount = relationPath.split(' -> parent').length - 1 - 5;
@@ -73,11 +109,12 @@ export function useTreeService() {
 	 * @returns {RelationCode} - The relation code
 	 */
 	function getRelationCode(relationPath: string): RelationCode {
-		const relationMap: { [key: string]: RelationCode } = {
+		const relationMap: { [key in KnownRelationPaths]: RelationCode } = {
 			'self': RelationCode.SELF,
 			'self -> parent': RelationCode.PARENT,
 			'self -> sibling': RelationCode.SIBLING,
 			'self -> sibling -> child': RelationCode.NEPHEW,
+			'self -> parent -> child': RelationCode.STEP_SIBLING,
 			'self -> parent -> parent -> parent': RelationCode.GREAT_GRANDPARENT,
 			'self -> parent -> parent -> parent -> parent': RelationCode.GREAT_GREAT_GRANDPARENT,
 			'self -> parent -> parent -> parent -> parent -> parent': RelationCode.GREAT_GREAT_GREAT_GRANDPARENT,
@@ -94,10 +131,15 @@ export function useTreeService() {
 			'self -> child -> child -> child -> child': RelationCode.GREAT_GREAT_GRANDCHILD,
 			'self -> child -> child -> child -> child -> child': RelationCode.GREAT_GREAT_GREAT_GRANDPARENT,
 			'self -> child -> parent': RelationCode.SPOUSE,
+			'self -> child -> spouse': RelationCode.CHILD_IN_LAW,
 			'self -> spouse': RelationCode.SPOUSE,
+			'self -> spouse -> parent': RelationCode.PARENT_IN_LAW,
+			'self -> spouse -> child': RelationCode.STEP_CHILD,
+			'self -> spouse -> sibling': RelationCode.SIBLING_IN_LAW,
+			'self -> parent -> spouse': RelationCode.STEP_PARENT,
 		};
 
-		return relationMap[relationPath] || RelationCode.OTHER;
+		return relationMap[relationPath as KnownRelationPaths] || RelationCode.OTHER;
 	}
 
 	/**
@@ -110,13 +152,18 @@ export function useTreeService() {
 	 * @returns {number} - The grade of the person
 	 */
 	function getGrade(relationPath: string, relationString?: string): number {
-		const relationMap: { [key: string]: number } = {
+		const relationMap: { [key in KnownRelationPaths]: number } = {
 			'self': 0, // Selección
 			'self -> child -> parent': 0, // Esposo
 			'self -> spouse': 0, // Esposo
-			'self -> parent': 1, // Padre
 			'self -> child': 1, // Hijo
+			'self -> spouse -> child': 1, // Hijastro
+			'self -> parent': 1, // Padre
+			'self -> parent -> spouse': 1, // Padrastro
+			'self -> spouse -> parent': 1, // Suegro
 			'self -> sibling': 2, // Hermano
+			'self -> spouse -> sibling': 2, // Cuñado
+			'self -> parent -> child': 2, // Hermanastro
 			'self -> parent -> parent': 2, // Abuelo
 			'self -> child -> child': 2, // Nieto
 			'self -> sibling -> child': 3, // Sobrino
@@ -134,7 +181,7 @@ export function useTreeService() {
 			'self -> child -> child -> child -> child -> child': 5, // Chozno
 		};
 
-		const relation = relationMap[relationPath] ?? null;
+		const relation = relationMap[relationPath as KnownRelationPaths] ?? null;
 		if (relation === null) {
 			if (!relationString) {
 				console.log(`🔴 Generation not found for path: ${relationPath}`);

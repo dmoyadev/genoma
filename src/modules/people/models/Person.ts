@@ -48,5 +48,11 @@ export enum RelationCode {
 	GREAT_GRANDCHILD = 'great_grandchild',
 	GREAT_GREAT_GRANDCHILD = 'great_great_grandchild',
 	GREAT_GREAT_GREAT_GRANDCHILD = 'great_great_great_grandchild',
+	STEP_SIBLING = 'step_sibling',
+	STEP_CHILD = 'step_child',
+	STEP_PARENT = 'step_parent',
+	PARENT_IN_LAW = 'parent_in_law',
+	CHILD_IN_LAW = 'child_in_law',
+	SIBLING_IN_LAW = 'sibling_in_law',
 	OTHER = 'other',
 }
