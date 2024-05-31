@@ -50,7 +50,7 @@ export function useTreeService() {
 	 */
 	function getRelationString(relationPath: string, gender: Gender, isMarriageActive?: boolean): string | undefined {
 		const relationMap: { [key in KnownRelationPaths]: { male: string; female: string } } = {
-			'self': { male: 'Selección', female: 'Selección' },
+			'self': { male: 'Ego', female: 'Ego' },
 			'self -> parent': { male: 'Padre', female: 'Madre' },
 			'self -> sibling': { male: 'Hermano', female: 'Hermana' },
 			'self -> parent -> child': { male: 'Hermanastro', female: 'Hermanastra' },
@@ -161,6 +161,7 @@ export function useTreeService() {
 			'self -> parent': 1, // Padre
 			'self -> parent -> spouse': 1, // Padrastro
 			'self -> spouse -> parent': 1, // Suegro
+			'self -> child -> spouse': 1, // Yerno
 			'self -> sibling': 2, // Hermano
 			'self -> spouse -> sibling': 2, // Cuñado
 			'self -> parent -> child': 2, // Hermanastro
@@ -279,7 +280,6 @@ export function useTreeService() {
 		if (!root.value && Object.keys(people.value).length) {
 			root.value = Object.values(people.value)[0];
 		}
-		console.log('🟢 Update relations');
 		if (!Object.keys(relations.value).length && root.value && Object.keys(people.value).length) {
 			relations.value = getRelations(root.value.id);
 		}
