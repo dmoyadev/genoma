@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import type { Person } from '@/modules/people/models/Person.ts';
 import { useDB } from '@/modules/app/composables/useDB.ts';
+import { useTreeService } from '@/modules/people/composables/useTreeService.ts';
 
 const people = ref<Record<string, Person>>({});
 export function usePeopleService() {
@@ -12,6 +13,8 @@ export function usePeopleService() {
 		}
 
 		people.value = {};
+		const { root } = useTreeService();
+		root.value = undefined;
 
 		// Fetch people from API
 		const rawPeople = await getBy<Person>();

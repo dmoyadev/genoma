@@ -1,8 +1,8 @@
 export interface Person {
 	id: string;
-	name: string;
-	firstSurname: string;
-	secondSurname: string;
+	name?: string;
+	firstSurname?: string;
+	secondSurname?: string;
 	gender: Gender;
 	notes?: string;
 	relationships: Relationships;
