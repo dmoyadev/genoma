@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import PersonCard from '@/modules/people/components/PersonCard.vue';
+import { usePeopleService } from '@/modules/people/composables/usePeopleService.ts';
+import { useTreeService } from '@/modules/people/composables/useTreeService.ts';
 
 /** @see: https://dev.to/iscorekin/infinite-workspace-without-canvas-107b */
 const offset = ref<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -80,37 +83,32 @@ function handleTouchEnd() {
 	previousTouch.value = undefined;
 	initialPinchDistance.value = undefined;
 }
+
+const { loading, getPeople } = usePeopleService();
+getPeople();
+const { root } = useTreeService();
 </script>
 
 <template>
 	<div
 		class="workspace"
-		@mousedown="isDragging = true"
-		@touchstart="handleTouchStart($event)"
-		@mouseup="isDragging = false"
-		@touchend="handleTouchEnd()"
-		@mousemove="handleMouseMove($event)"
-		@touchmove="handleTouchMove($event)"
-		@wheel="handleWheel($event)"
+		@mousedown.passive="isDragging = true"
+		@touchstart.passive="handleTouchStart($event)"
+		@mouseup.passive="isDragging = false"
+		@touchend.passive="handleTouchEnd()"
+		@mousemove.passive="handleMouseMove($event)"
+		@touchmove.passive="handleTouchMove($event)"
+		@wheel.passive="handleWheel($event)"
 	>
 		<div class="container">
 			<div
+				v-if="!loading && root"
 				class="nodes-container"
 				:style="{
 					transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
 				}"
 			>
-				<div class="node">
-					node #1
-				</div>
-
-				<div class="node">
-					node #2
-				</div>
-
-				<div class="node">
-					node #3
-				</div>
+				<PersonCard :person="root" />
 			</div>
 		</div>
 	</div>
@@ -133,10 +131,6 @@ function handleTouchEnd() {
 
 	.container {
 		overflow: hidden;
-
-		.node {
-			position: absolute;
-		}
 	}
 }
 </style>

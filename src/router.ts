@@ -27,14 +27,14 @@ export const routes: Array<RouteRecordRaw> = [
 	},
 
 	{
-		path: '/list',
+		path: '/',
 		name: 'Home',
 		component: () => import('@/modules/app/pages/HomePage.vue'),
 		meta: { title: '' },
 	},
 
 	{
-		path: '',
+		path: '/tree',
 		name: 'InfiniteHome',
 		component: () => import('@/modules/people/pages/InfiniteWorkspace.vue'),
 		meta: { title: '' },
