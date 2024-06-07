@@ -27,11 +27,17 @@ export const routes: Array<RouteRecordRaw> = [
 	},
 
 	{
-		path: '',
+		path: '/list',
 		name: 'Home',
 		component: () => import('@/modules/app/pages/HomePage.vue'),
 		meta: { title: '' },
+	},
 
+	{
+		path: '',
+		name: 'InfiniteHome',
+		component: () => import('@/modules/people/pages/InfiniteWorkspace.vue'),
+		meta: { title: '' },
 	},
 
 	{
@@ -97,7 +103,7 @@ function setDocumentTitle(to: RouteLocationNormalized) {
 	const titleSuffix = import.meta.env.MODE !== 'production'
 		? (` ${((import.meta.env.VITE_ENV_NAME as string | undefined) || import.meta.env.MODE).toUpperCase()}`)
 		: '';
-	document.title = `${to.meta?.title ? (`${String(to.meta.title)} | `) : ''}🧬 Genoma${titleSuffix}`;
+	document.title = `${to.meta?.title ? (`${String(to.meta.title)} | `) : ''}Genoma${titleSuffix}`;
 }
 
 async function checkAuth(to: RouteLocationNormalized) {
